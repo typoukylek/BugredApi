@@ -16,14 +16,16 @@ namespace BugredApi
         public void TestDoRegisterAUser()
         {
             RequestHelper requestHelper = new RequestHelper();
-            string email = Helper.UniqueStringGeneration() + "@someEmail.com";
-            string name = Helper.UniqueStringGeneration();
+            DoRegister register = new DoRegister();
+            register.email = Helper.UniqueStringGeneration() + "@someEmail.com";
+            register.name = Helper.UniqueStringGeneration() + "name";
+            register.password = "Password123";
             Dictionary<string, string> body = new Dictionary<string, string>
 
             {
-                { "email", email },
-                { "name", name},
-                { "password", "Password123" }
+                { "email", register.email },
+                { "name", register.email},
+                { "password", register.password}
 
             };
 
