@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BugredApi.Helper
+namespace BugredApi
 {
-   public class Helper
+    class Helper
     {
         public static string UniqueStringGeneration()
         {

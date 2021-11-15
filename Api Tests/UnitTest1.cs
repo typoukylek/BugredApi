@@ -1,55 +1,72 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using RestSharp;
 using System.Collections.Generic;
-using BugredApi.Helper;
 using Newtonsoft.Json.Linq;
 using System.Net;
 using System;
 using BugredApi.Model;
 
+
 namespace BugredApi
 {
     public class Tests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
 
         [Test]
         public void TestDoRegisterAUser()
         {
-            RestClient client = new RestClient("http://users.bugred.ru/tasks/rest/doregister")
-            {
-                Timeout = 300000
-            };
-            RestRequest request = new RestRequest(Method.POST);
-            request.AddHeader("content-type", "application/json");
+            RequestHelper requestHelper = new RequestHelper();
+            string email = Helper.UniqueStringGeneration() + "@someEmail.com";
+            string name = Helper.UniqueStringGeneration();
+            Dictionary<string, string> body = new Dictionary<string, string>
 
-            Dictionary<string, string> body = Helper;
             {
-                { "email", "1234@somemail.com" },
-                { "name", "somename"}
+                { "email", email },
+                { "name", name},
+                { "password", "Password123" }
 
             };
 
-            
-   
-    request.AddJsonBody(body);
 
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = requestHelper.RequestSend("/doregister", body);
 
-    JObject json = JObject.Parse(response.Content);
+            JObject json = JObject.Parse(response.Content);
 
-    Assert.AreEqual("OK", response.StatusCode.ToString());
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("OK", response.StatusCode.ToString());
             Assert.AreEqual(body["email"], json["email"]?.ToString());
-        
-        }
-    }
+            Assert.AreEqual(body["name"], json["name"]?.ToString());
 
-        private void UniqueStringGeneration()
-        {
-            throw new NotImplementedException();
         }
     }
+}
+
+
+
+
+//[Test]
+//public void DoRegisterWithNoEmail()
+//{
+
+//    {
+//        Timeout = 300000
+//    };
+//    RestRequest request = new RestRequest(Method.POST);
+//    request.AddHeader("content-type", "application/json");
+
+
+//    request.AddJsonBody(body);
+
+//    IRestResponse response = client.Execute(request);
+
+//    JObject json = JObject.Parse(response.Content);
+
+//    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+
+//    Assert.AreEqual("error", json["type"]?.ToString());
+//    Assert.AreEqual(" Некоректный  email ", json["message"]?.ToString());
+//    Assert.AreEqual(null, json["email"]?.ToString());
+//    Assert.AreEqual(null, json["name"]?.ToString());
+//}
+
+
+
