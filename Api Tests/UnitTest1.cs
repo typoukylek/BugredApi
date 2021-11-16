@@ -34,7 +34,7 @@ namespace BugredApi
         }
 
         [Test]
-        public void TestRegisterUserWithEmptyEmail()
+        public void TestDoRegisterUserWithEmptyEmail()
         {
             RequestHelper requestHelper = new RequestHelper();
             string email = "";
@@ -59,59 +59,29 @@ namespace BugredApi
         }
 
         [Test]
-        public void TestRegisterUserWithEmptyName()
+        public void TestCreateUserAllField()// ?
         {
             RequestHelper requestHelper = new RequestHelper();
-            string email = Helper.UniqueStringGeneration() + "@some.mail";
-            string name = "";
-            Dictionary<string, string> body = new Dictionary<string, string>
+            CreateUser body = new CreateUser();
+            body.adres = Helper.UniqueStringGeneration();
+            body.birthday = Helper.UniqueStringGeneration();
+            body.cat = Helper.UniqueStringGeneration();
+            body.cavy = Helper.UniqueStringGeneration();
+            body.date_start = Helper.UniqueStringGeneration();
+            body.dog = Helper.UniqueStringGeneration();
+            body.email = Helper.UniqueStringGeneration() + "@User.mail";
 
-          {
-                { "email", email },
-                { "name", name},
-                { "password", "Password123" }
+            //Dictionary<string, string> body = new Dictionary<string, string>
 
-            };
-
-            IRestResponse response = requestHelper.RequestSend("/doregister", body);
+            IRestResponse response = requestHelper.RequestSend("/createuser", body);
             JObject json = JObject.Parse(response.Content);
 
-            //Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
-
-            Assert.AreEqual("error", json["type"]?.ToString());
-            Assert.AreEqual("поле фио является обязательным", json["message"]?.ToString());
-            Assert.AreEqual(null, json["email"]?.ToString());
-            Assert.AreEqual(null, json["name"]?.ToString());
+            Assert.AreEqual("OK", response.StatusCode.ToString());
         }
+
+        //[Test]
+        //public void TestCreateuserWithTask()
+        //{
+        //}
     }
 }
-
-
-
-//[Test]
-//public void DoRegisterWithNoEmail()
-//{
-
-//    {
-//        Timeout = 300000
-//    };
-//    RestRequest request = new RestRequest(Method.POST);
-//    request.AddHeader("content-type", "application/json");
-
-
-//    request.AddJsonBody(body);
-
-//    IRestResponse response = client.Execute(request);
-
-//    JObject json = JObject.Parse(response.Content);
-
-//    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-
-//    Assert.AreEqual("error", json["type"]?.ToString());
-//    Assert.AreEqual(" Некоректный  email ", json["message"]?.ToString());
-//    Assert.AreEqual(null, json["email"]?.ToString());
-//    Assert.AreEqual(null, json["name"]?.ToString());
-//}
-
-
-
