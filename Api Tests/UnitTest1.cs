@@ -11,37 +11,80 @@ namespace BugredApi
 {
     public class Tests
     {
-
         [Test]
         public void TestDoRegisterAUser()
         {
             RequestHelper requestHelper = new RequestHelper();
-            DoRegister register = new DoRegister();
-            register.email = Helper.UniqueStringGeneration() + "@someEmail.com";
-            register.name = Helper.UniqueStringGeneration() + "name";
-            register.password = "Password123";
+            string email = Helper.UniqueStringGeneration() + "@someEmail.com";
+            string name = Helper.UniqueStringGeneration();
             Dictionary<string, string> body = new Dictionary<string, string>
 
-            {
-                { "email", register.email },
-                { "name", register.email},
-                { "password", register.password}
-
+          {
+                { "email", email },
+                { "name", name},
+                { "password", "Password123" }
             };
 
-
             IRestResponse response = requestHelper.RequestSend("/doregister", body);
-
             JObject json = JObject.Parse(response.Content);
 
             Assert.AreEqual("OK", response.StatusCode.ToString());
             Assert.AreEqual(body["email"], json["email"]?.ToString());
             Assert.AreEqual(body["name"], json["name"]?.ToString());
+        }
 
+        [Test]
+        public void TestRegisterUserWithEmptyEmail()
+        {
+            RequestHelper requestHelper = new RequestHelper();
+            string email = "";
+            string name = Helper.UniqueStringGeneration();
+            Dictionary<string, string> body = new Dictionary<string, string>
+
+          {
+                { "email", email },
+                { "name", name},
+                { "password", "Password123" }
+
+            };
+
+            IRestResponse response = requestHelper.RequestSend("/doregister", body);
+            JObject json = JObject.Parse(response.Content);
+
+            Assert.AreEqual("error", json["type"]?.ToString());
+            Assert.AreEqual(" Некоректный  email ", json["message"]?.ToString());
+            Assert.AreEqual(null, json["email"]?.ToString());
+            Assert.AreEqual(null, json["name"]?.ToString());
+
+        }
+
+        [Test]
+        public void TestRegisterUserWithEmptyName()
+        {
+            RequestHelper requestHelper = new RequestHelper();
+            string email = Helper.UniqueStringGeneration() + "@some.mail";
+            string name = "";
+            Dictionary<string, string> body = new Dictionary<string, string>
+
+          {
+                { "email", email },
+                { "name", name},
+                { "password", "Password123" }
+
+            };
+
+            IRestResponse response = requestHelper.RequestSend("/doregister", body);
+            JObject json = JObject.Parse(response.Content);
+
+            //Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+
+            Assert.AreEqual("error", json["type"]?.ToString());
+            Assert.AreEqual("поле фио является обязательным", json["message"]?.ToString());
+            Assert.AreEqual(null, json["email"]?.ToString());
+            Assert.AreEqual(null, json["name"]?.ToString());
         }
     }
 }
-
 
 
 
