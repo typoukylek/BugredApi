@@ -23,6 +23,4 @@ namespace BugredApi.Model
         [JsonProperty("email_owner")]
         public string email_owner;
     }
-
 }
-

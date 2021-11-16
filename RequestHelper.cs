@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace BugredApi
 {
-    public class RequestHelper //with base url, and headers helper
+    public class RequestHelper
     {
         public string BaseUrl = "http://users.bugred.ru/tasks/rest";
-         
+
         public IRestResponse RequestSend(string path, object body)
         {
             RestClient client = new RestClient(BaseUrl + path)
@@ -26,6 +26,5 @@ namespace BugredApi
 
             return response;
         }
-
     }
 }

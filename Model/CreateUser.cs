@@ -16,10 +16,10 @@ namespace BugredApi.Model
         public string name;
 
         [JsonProperty("tasks")]
-        List<string> tasks;
+      public  List<string> tasks;
 
         [JsonProperty("companies")]
-        List<string> companies;
+      public  List<string> companies;
 
         [JsonProperty("hobby")]
         public string hobby;
@@ -68,5 +68,4 @@ namespace BugredApi.Model
         [JsonProperty("date_start")]
         public string date_start;
     }
-
 }

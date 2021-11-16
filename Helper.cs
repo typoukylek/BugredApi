@@ -8,9 +8,18 @@ namespace BugredApi
 {
     class Helper
     {
-        public static string UniqueStringGeneration()
+        public static string UniqueStringGeneration => DateTime.Now.ToString("ddMMyyyyhhmmss");
+
+
+        public class HelperUserData
         {
-            return DateTime.Now.ToString("ddMMyyyyhhmmss");
+            static public Dictionary<string, string> ValidUserData() => new Dictionary<string, string>()
+            {
+                {"email", "somemail@mail.ok"},
+                {"name", "somename"},
+                {"password", "123123"},
+
+            };
         }
     }
 }
